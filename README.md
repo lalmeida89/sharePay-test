@@ -1,2 +1,2 @@
-Blog app challenge solution
-==========================
+Share Pay app,
+just getting started
