@@ -1,4 +1,4 @@
 const express = require("express");
 const router = express.Router();
 
-const { Groups } = require("./models/groups");
+const { Groups } = require("./../app/models/groups");

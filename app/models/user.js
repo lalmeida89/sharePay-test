@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 const bcrypt   = require('bcrypt-nodejs');
-mongoose.Promise = global.promise;
+//mongoose.Promise = global.promise;
 
 // define the schema for our user model
 const userSchema = mongoose.Schema({

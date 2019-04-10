@@ -11,9 +11,9 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const userRouter = require('./routers/userRouter');
-const groupRouter = require('./routers/recipesRouter');
+const groupRouter = require('./routers/groupsRouter');
 
-mongoose.Promise = global.Promise;
+//mongoose.Promise = global.Promise;
 mongoose.connect(DATABASE_URL);
 
 require('./config/passport')(passport);
