@@ -12,10 +12,10 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const userRouter = require('./Server/routes/userRouter');
 const config = require('./secrets')
-//const groupRouter = require('./Server/routes/groupsRouter');
+const groupsRouter = require('./Server/routes/groupsRouter');
 
 //mongoose.Promise = global.Promise;
-mongoose.connect(DATABASE_URL);
+mongoose.connect(DATABASE_URL, { useNewUrlParser: true });
 
 require('./Server/config/passport')(passport);
 
@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/user", userRouter);
-//app.use("/group", groupsRouter);
+app.use("/groups", groupsRouter);
 
 let server;
 
