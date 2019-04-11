@@ -59,7 +59,3 @@ typings/
 
 # secret keys
 secrets.js
-
-# database and auth configs
-auth.js
-database.js
