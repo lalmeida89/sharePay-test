@@ -57,7 +57,9 @@ typings/
 # dotenv environment variables file
 .env
 
-# testing git with secrets
+# secret keys
 secrets.js
 
-Server/config/
+# database and auth configs
+Server/config/auth
+Server/config/database
