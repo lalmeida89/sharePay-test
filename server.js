@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const { DATABASE_URL, PORT } = require('./config/database');
+const { DATABASE_URL, PORT } = require('./Server/config/database');
 const app = express();
 const port = process.env.PORT || 8080;
 const passport = require('passport');
@@ -10,13 +10,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const userRouter = require('./routers/userRouter');
-const groupRouter = require('./routers/groupsRouter');
+const userRouter = require('./Server/routes/userRouter');
+//const groupRouter = require('./Server/routes/groupsRouter');
 
 //mongoose.Promise = global.Promise;
 mongoose.connect(DATABASE_URL);
 
-require('./config/passport')(passport);
+require('./Server/config/passport')(passport);
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -24,27 +24,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch', // session secret
+    secret: 'ilovescotchscotchyscotchscotch',
     resave: true,
     saveUninitialized: true
 }));
 
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(passport.session());
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 console.log(path.join(__dirname, 'public'));
 
-require('./app/routes.js')(app, passport);
+//require('./app/routes.js')(app, passport);
 
-app.use("/user", usersRouter);
-app.use("/group", groupsRouter);
-// closeServer needs access to a server object, but that only
-// gets created when `runServer` runs, so we declare `server` here
-// and then assign a value to it in run
+app.get('/', (req, res) => {
+  console.log('youre home');
+  res.json({message: 'testing JSON'})
+})
+
+app.use("/user", userRouter);
+//app.use("/group", groupsRouter);
+
 let server;
 
-// this function connects to our database, then starts the server
 function runServer(databaseUrl, port = PORT) {
   return new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl, err => {
@@ -63,8 +65,6 @@ function runServer(databaseUrl, port = PORT) {
   });
 }
 
-// this function closes the server, and returns a promise. we'll
-// use it in our integration tests later.
 function closeServer() {
   return mongoose.disconnect().then(() => {
     return new Promise((resolve, reject) => {
@@ -79,8 +79,6 @@ function closeServer() {
   });
 }
 
-// if server.js is called directly (aka, with `node server.js`), this block
-// runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
 if (require.main === module) {
   runServer(DATABASE_URL).catch(err => console.error(err));
 }

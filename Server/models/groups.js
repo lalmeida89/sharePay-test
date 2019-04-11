@@ -36,5 +36,4 @@ groupSchema.methods.serialize = function() {
 };
 
 const Groups = mongoose.model('Groups', groupSchema);
-
 module.exports = {Groups}
