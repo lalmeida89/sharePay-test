@@ -61,5 +61,5 @@ typings/
 secrets.js
 
 # database and auth configs
-Server/config/auth
-Server/config/database
+Server/config/auth.js/
+Server/config/database.js/
