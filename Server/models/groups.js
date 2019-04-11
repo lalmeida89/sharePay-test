@@ -1,7 +1,5 @@
-'use strict';
-
 const mongoose = require('mongoose');
-//mongoose.Promise = global.promise;
+mongoose.Promise = global.promise;
 
 const groupSchema = mongoose.Schema({
   users: Array,

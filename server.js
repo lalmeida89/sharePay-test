@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const userRouter = require('./Server/routes/userRouter');
+const config = require('./secrets')
 //const groupRouter = require('./Server/routes/groupsRouter');
 
 //mongoose.Promise = global.Promise;
@@ -24,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 app.use(session({
-    secret: 'ilovescotchscotchyscotchscotch',
+    secret: config.secret,
     resave: true,
     saveUninitialized: true
 }));
