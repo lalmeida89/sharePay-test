@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "client": "cd Client && yarn start",
+    "server": "cd Server/ && nodemon server.js",
     "test": "mocha --exit"
   },
   "keywords": [],
@@ -13,6 +15,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "express": "^4.16.3",

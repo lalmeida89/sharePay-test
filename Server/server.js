@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const { DATABASE_URL, PORT } = require('./Server/config/database');
+const { DATABASE_URL, PORT } = require('./config/database');
 const app = express();
 const port = process.env.PORT || 8080;
 const passport = require('passport');
@@ -10,14 +10,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const userRouter = require('./Server/routes/userRouter');
-const config = require('./secrets')
-const groupsRouter = require('./Server/routes/groupsRouter');
+const userRouter = require('./routes/userRouter');
+const secretKey = require('./../secrets').secret
+const groupsRouter = require('./routes/groupsRouter');
 
 //mongoose.Promise = global.Promise;
 mongoose.connect(DATABASE_URL, { useNewUrlParser: true });
 
-require('./Server/config/passport')(passport);
+require('./config/passport')(passport);
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 app.use(session({
-    secret: config.secret,
+    secret: secretKey,
     resave: true,
     saveUninitialized: true
 }));
@@ -41,7 +41,17 @@ console.log(path.join(__dirname, 'public'));
 app.get('/', (req, res) => {
   console.log('youre home');
   res.json({message: 'testing JSON'})
-})
+});
+
+app.get('/api/hello', (req, res) => {
+  res.send({ express: 'Hello From Express' });
+});
+app.post('/api/world', (req, res) => {
+  console.log(req.body);
+  res.send(
+    `I received your POST request. This is what you sent me: ${req.body.post}`,
+  );
+});
 
 app.use("/user", userRouter);
 app.use("/groups", groupsRouter);
